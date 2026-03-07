@@ -517,6 +517,84 @@
             color: var(--gold);
         }
 
+        /* Productos Hershey's */
+        .hersheys-productos {
+            background: linear-gradient(135deg, #1a1a1a 0%, #0a0a0a 100%);
+            color: var(--white);
+        }
+
+        .hersheys-productos .section-title {
+            color: var(--white);
+        }
+
+        .hersheys-card {
+            max-width: 700px;
+            margin: 0 auto;
+            text-align: center;
+            padding: 3rem;
+            border: 1px solid rgba(201, 169, 98, 0.3);
+            position: relative;
+        }
+
+        .hersheys-card::before,
+        .hersheys-card::after {
+            content: '';
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            border-color: var(--gold);
+            border-style: solid;
+        }
+
+        .hersheys-card::before {
+            top: -1px;
+            left: -1px;
+            border-width: 1px 0 0 1px;
+        }
+
+        .hersheys-card::after {
+            bottom: -1px;
+            right: -1px;
+            border-width: 0 1px 1px 0;
+        }
+
+        .hersheys-subtitle {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.5rem;
+            font-weight: 400;
+            color: var(--gold);
+            margin-bottom: 1.5rem;
+        }
+
+        .hersheys-text {
+            font-size: 0.95rem;
+            color: var(--gray);
+            line-height: 1.8;
+            margin-bottom: 2rem;
+        }
+
+        .hersheys-lista {
+            list-style: none;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 0.8rem 1.5rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .hersheys-lista li {
+            font-size: 0.85rem;
+            color: var(--white);
+            padding: 0.5rem 1rem;
+            border: 1px solid rgba(201, 169, 98, 0.2);
+            transition: all 0.3s var(--transition);
+        }
+
+        .hersheys-lista li:hover {
+            border-color: var(--gold);
+            color: var(--gold);
+        }
+
         /* Compromisos */
         .compromisos {
             background: linear-gradient(135deg, var(--charcoal) 0%, var(--black) 100%);
@@ -937,15 +1015,10 @@
                         <li>Oreo Original (Mondelez)</li>
                         <li>Chokis (Gamesa)</li>
                         <li>Emperador Chocolate (Gamesa)</li>
-                        <li>KitKat (Nestlé)</li>
-                        <li>Snickers (Mars)</li>
-                        <li>Carlos V (Nestlé)</li>
                         <li>Mazapán (De La Rosa)</li>
                         <li>Lunetas (De La Rosa)</li>
                         <li>Gomitas Welch's</li>
                         <li>Skittles</li>
-                        <li>Bubulubu</li>
-                        <li>Kínder Delice</li>
                     </ul>
                 </div>
                 <div class="producto-grupo">
@@ -1002,8 +1075,6 @@
                     <h4>Lácteos</h4>
                     <ul>
                         <li>Yogurt Bebible (Lala)</li>
-                        <li>Leche Sabor Chocolate (Santa Clara)</li>
-                        <li>Leche Sabor Fresa (Santa Clara)</li>
                         <li>Leche Santa Clara</li>
                     </ul>
                 </div>
@@ -1050,10 +1121,35 @@
         </div>
     </section>
 
+    <!-- Productos Hershey's -->
+    <section class="hersheys-productos" id="hersheys-productos">
+        <div class="section-header fade-up">
+            <span class="section-number">04</span>
+            <h2 class="section-title">Productos Hershey's</h2>
+            <div class="section-line"></div>
+        </div>
+        <div class="hersheys-card fade-up">
+            <h3 class="hersheys-subtitle">Espacio exclusivo para tu marca</h3>
+            <p class="hersheys-text">Estamos abiertos a incorporar productos Hershey's en nuestra máquina. Precios, presentaciones y selección de productos pueden definirse en conjunto con el equipo de Hershey's.</p>
+            <ul class="hersheys-lista">
+                <li>Hershey's Milk Chocolate</li>
+                <li>Hershey's Cookies & Cream</li>
+                <li>Hershey's con Almendras</li>
+                <li>Kisses</li>
+                <li>Reese's</li>
+                <li>Jolly Rancher</li>
+                <li>Leche Hershey's (sabores)</li>
+            </ul>
+            <a href="#contacto" class="cta-button">
+                <span>Conversemos sobre el catálogo ideal</span>
+            </a>
+        </div>
+    </section>
+
     <!-- Compromisos -->
     <section class="compromisos" id="compromisos">
         <div class="section-header fade-up">
-            <span class="section-number">04</span>
+            <span class="section-number">05</span>
             <h2 class="section-title">Nuestros Compromisos</h2>
             <div class="section-line"></div>
         </div>
@@ -1118,7 +1214,7 @@
     <!-- Contacto -->
     <section class="contacto" id="contacto">
         <div class="section-header fade-up">
-            <span class="section-number">05</span>
+            <span class="section-number">06</span>
             <h2 class="section-title">Un Beneficio Más para el Equipo Hershey's</h2>
             <div class="section-line"></div>
         </div>
