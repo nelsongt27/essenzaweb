@@ -1,0 +1,1266 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Essenza — Vending Premium</title>
+    <link rel="icon" type="image/svg+xml" href="../assets/essenza_icon.svg">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --black: #0a0a0a;
+            --white: #fafafa;
+            --cream: #f5f3ef;
+            --gold: #c9a962;
+            --gold-light: #d4bc7e;
+            --charcoal: #2a2a2a;
+            --gray: #6a6a6a;
+            --transition: cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: var(--cream);
+            color: var(--charcoal);
+            overflow-x: hidden;
+            line-height: 1.7;
+        }
+
+        /* Cursor personalizado */
+        .cursor {
+            width: 20px;
+            height: 20px;
+            border: 1px solid var(--gold);
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            transition: transform 0.15s var(--transition), opacity 0.15s;
+            mix-blend-mode: difference;
+        }
+
+        .cursor-dot {
+            width: 4px;
+            height: 4px;
+            background: var(--gold);
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+        }
+
+        /* Loader */
+        .loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--black);
+            z-index: 10000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+
+        .loader-logo {
+            width: 120px;
+            height: 120px;
+            opacity: 0;
+            animation: fadeIn 1s var(--transition) forwards;
+        }
+
+        .loader-logo img {
+            width: 100%;
+            height: 100%;
+        }
+
+        .loader-line {
+            width: 0;
+            height: 1px;
+            background: var(--gold);
+            margin-top: 2rem;
+            animation: expandLine 2s var(--transition) 0.5s forwards;
+        }
+
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+
+        @keyframes expandLine {
+            to { width: 200px; }
+        }
+
+        /* Header */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 1.5rem 4rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            transition: all 0.4s var(--transition);
+        }
+
+        header.scrolled {
+            background: rgba(10, 10, 10, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1rem 4rem;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.3);
+        }
+
+        header:not(.scrolled) {
+            mix-blend-mode: difference;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+        }
+
+        .logo img {
+            height: 40px;
+            width: auto;
+        }
+
+        nav {
+            display: flex;
+            gap: 3rem;
+        }
+
+        nav a {
+            color: var(--white);
+            text-decoration: none;
+            font-size: 0.75rem;
+            letter-spacing: 0.2rem;
+            text-transform: uppercase;
+            position: relative;
+            padding-bottom: 0.5rem;
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: var(--gold);
+            transition: width 0.4s var(--transition);
+        }
+
+        nav a:hover::after {
+            width: 100%;
+        }
+
+        /* Hero */
+        .hero {
+            height: 100vh;
+            background: var(--black);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background:
+                radial-gradient(ellipse at 30% 20%, rgba(201, 169, 98, 0.1) 0%, transparent 50%),
+                radial-gradient(ellipse at 70% 80%, rgba(201, 169, 98, 0.08) 0%, transparent 50%);
+        }
+
+        .hero-content {
+            text-align: center;
+            z-index: 10;
+            opacity: 0;
+            transform: translateY(50px);
+            animation: heroReveal 1.2s var(--transition) 2.5s forwards;
+        }
+
+        @keyframes heroReveal {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero-subtitle {
+            font-size: 0.7rem;
+            letter-spacing: 0.5rem;
+            color: var(--gold);
+            text-transform: uppercase;
+            margin-bottom: 2rem;
+        }
+
+        .hero-logo {
+            width: 250px;
+            height: auto;
+            margin: 0 auto 2rem;
+        }
+
+        .hero-tagline {
+            font-size: 1rem;
+            font-weight: 300;
+            color: var(--gray);
+            margin-top: 2rem;
+            letter-spacing: 0.1rem;
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 3rem;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            opacity: 0;
+            animation: fadeIn 1s var(--transition) 3.5s forwards;
+        }
+
+        .scroll-indicator span {
+            font-size: 0.6rem;
+            letter-spacing: 0.3rem;
+            color: var(--gray);
+            text-transform: uppercase;
+        }
+
+        .scroll-line {
+            width: 1px;
+            height: 50px;
+            background: linear-gradient(to bottom, var(--gold), transparent);
+            animation: scrollPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes scrollPulse {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+        }
+
+        /* Sections */
+        section {
+            padding: 8rem 4rem;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 5rem;
+        }
+
+        .section-number {
+            font-size: 0.7rem;
+            letter-spacing: 0.3rem;
+            color: var(--gold);
+            display: block;
+            margin-bottom: 1rem;
+        }
+
+        .section-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 300;
+            color: var(--charcoal);
+            letter-spacing: 0.1rem;
+        }
+
+        .section-line {
+            width: 60px;
+            height: 1px;
+            background: var(--gold);
+            margin: 2rem auto 0;
+        }
+
+        /* Propuesta */
+        .propuesta {
+            background: var(--white);
+        }
+
+        .value-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 4rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .value-card {
+            text-align: center;
+            padding: 3rem 2rem;
+            border: 1px solid transparent;
+            transition: all 0.5s var(--transition);
+            position: relative;
+        }
+
+        .value-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 1px solid var(--gold);
+            opacity: 0;
+            transform: scale(0.9);
+            transition: all 0.5s var(--transition);
+        }
+
+        .value-card:hover::before {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .value-icon {
+            width: 60px;
+            height: 60px;
+            border: 1px solid var(--gold);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 2rem;
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.5rem;
+            color: var(--gold);
+        }
+
+        .value-card h3 {
+            font-size: 0.8rem;
+            letter-spacing: 0.2rem;
+            text-transform: uppercase;
+            margin-bottom: 1rem;
+            color: var(--charcoal);
+        }
+
+        .value-card p {
+            font-size: 0.9rem;
+            color: var(--gray);
+            line-height: 1.8;
+        }
+
+        /* Stats */
+        .stats {
+            background: var(--black);
+            color: var(--white);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            max-width: 900px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .stat-item {
+            padding: 2rem;
+            border-right: 1px solid rgba(201, 169, 98, 0.2);
+        }
+
+        .stat-item:last-child {
+            border-right: none;
+        }
+
+        .stat-number {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 4rem;
+            font-weight: 300;
+            color: var(--gold);
+            line-height: 1;
+        }
+
+        .stat-label {
+            font-size: 0.7rem;
+            letter-spacing: 0.2rem;
+            text-transform: uppercase;
+            color: var(--gray);
+            margin-top: 1rem;
+        }
+
+        /* Máquina & Servicio */
+        .maquina {
+            background: var(--white);
+        }
+
+        .maquina-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .maquina-card {
+            background: var(--cream);
+            padding: 2.5rem 2rem;
+            text-align: center;
+            border: 1px solid rgba(201, 169, 98, 0.15);
+            transition: all 0.4s var(--transition);
+        }
+
+        .maquina-card:hover {
+            border-color: var(--gold);
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.08);
+        }
+
+        .maquina-icon {
+            width: 50px;
+            height: 50px;
+            margin: 0 auto 1.5rem;
+            color: var(--gold);
+        }
+
+        .maquina-icon svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        .maquina-card h3 {
+            font-size: 0.85rem;
+            letter-spacing: 0.15rem;
+            text-transform: uppercase;
+            margin-bottom: 1rem;
+            color: var(--charcoal);
+        }
+
+        .maquina-card p {
+            font-size: 0.85rem;
+            color: var(--gray);
+            line-height: 1.7;
+        }
+
+        .maquina-card p strong {
+            color: var(--gold);
+        }
+
+        /* Catálogo */
+        .catalogo {
+            background: var(--cream);
+        }
+
+        .categoria {
+            margin-bottom: 5rem;
+            max-width: 1000px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .categoria:last-child {
+            margin-bottom: 0;
+        }
+
+        .categoria-header {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            margin-bottom: 3rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(201, 169, 98, 0.3);
+        }
+
+        .categoria-numero {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 3rem;
+            font-weight: 300;
+            color: var(--gold);
+            line-height: 1;
+        }
+
+        .categoria-info h3 {
+            font-size: 1.2rem;
+            font-weight: 400;
+            letter-spacing: 0.1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .categoria-info p {
+            font-size: 0.85rem;
+            color: var(--gray);
+        }
+
+        .productos-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .producto-grupo {
+            background: var(--white);
+            padding: 2rem;
+            border: 1px solid rgba(0,0,0,0.05);
+            transition: all 0.4s var(--transition);
+        }
+
+        .producto-grupo:hover {
+            box-shadow: 0 20px 60px rgba(0,0,0,0.08);
+            transform: translateY(-5px);
+        }
+
+        .producto-grupo h4 {
+            font-size: 0.7rem;
+            letter-spacing: 0.2rem;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid rgba(201, 169, 98, 0.2);
+        }
+
+        .producto-grupo ul {
+            list-style: none;
+        }
+
+        .producto-grupo li {
+            font-size: 0.85rem;
+            color: var(--charcoal);
+            padding: 0.4rem 0;
+            border-bottom: 1px solid rgba(0,0,0,0.03);
+            transition: all 0.3s var(--transition);
+        }
+
+        .producto-grupo li:last-child {
+            border-bottom: none;
+        }
+
+        .producto-grupo li:hover {
+            padding-left: 0.5rem;
+            color: var(--gold);
+        }
+
+        /* Compromisos */
+        .compromisos {
+            background: linear-gradient(135deg, var(--charcoal) 0%, var(--black) 100%);
+            color: var(--white);
+        }
+
+        .compromisos .section-title {
+            color: var(--white);
+        }
+
+        .compromisos-list {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .compromiso-item {
+            display: flex;
+            gap: 2rem;
+            padding: 2rem 0;
+            border-bottom: 1px solid rgba(201, 169, 98, 0.15);
+            opacity: 0;
+            transform: translateX(-30px);
+        }
+
+        .compromiso-item.visible {
+            animation: slideIn 0.6s var(--transition) forwards;
+        }
+
+        @keyframes slideIn {
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .compromiso-icon {
+            width: 50px;
+            height: 50px;
+            border: 1px solid var(--gold);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .compromiso-icon svg {
+            width: 24px;
+            height: 24px;
+            stroke: var(--gold);
+            fill: none;
+        }
+
+        .compromiso-content h4 {
+            font-size: 0.9rem;
+            letter-spacing: 0.1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .compromiso-content p {
+            font-size: 0.85rem;
+            color: var(--gray);
+            line-height: 1.7;
+        }
+
+        /* Contacto */
+        .contacto {
+            background: var(--white);
+            text-align: center;
+        }
+
+        .contacto-card {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 4rem;
+            border: 1px solid rgba(201, 169, 98, 0.3);
+            position: relative;
+        }
+
+        .contacto-card::before,
+        .contacto-card::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            border-color: var(--gold);
+            border-style: solid;
+        }
+
+        .contacto-card::before {
+            top: -1px;
+            left: -1px;
+            border-width: 1px 0 0 1px;
+        }
+
+        .contacto-card::after {
+            bottom: -1px;
+            right: -1px;
+            border-width: 0 1px 1px 0;
+        }
+
+        .contacto-nombre {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2rem;
+            font-weight: 400;
+            margin-bottom: 0.5rem;
+        }
+
+        .contacto-rol {
+            font-size: 0.75rem;
+            letter-spacing: 0.2rem;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 2rem;
+        }
+
+        .contacto-info {
+            margin-top: 2rem;
+        }
+
+        .contacto-link {
+            display: block;
+            color: var(--charcoal);
+            text-decoration: none;
+            font-size: 0.9rem;
+            padding: 0.8rem 0;
+            transition: color 0.3s var(--transition);
+        }
+
+        .contacto-link:hover {
+            color: var(--gold);
+        }
+
+        .cta-button {
+            display: inline-block;
+            margin-top: 2rem;
+            padding: 1rem 3rem;
+            background: var(--black);
+            color: var(--white);
+            text-decoration: none;
+            font-size: 0.75rem;
+            letter-spacing: 0.2rem;
+            text-transform: uppercase;
+            transition: all 0.4s var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: var(--gold);
+            transition: left 0.4s var(--transition);
+            z-index: 0;
+        }
+
+        .cta-button:hover::before {
+            left: 0;
+        }
+
+        .cta-button span {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--black);
+            color: var(--white);
+            padding: 4rem;
+            text-align: center;
+        }
+
+        .footer-logo {
+            width: 100px;
+            height: auto;
+            margin: 0 auto 1rem;
+        }
+
+        .footer-tagline {
+            font-size: 0.7rem;
+            letter-spacing: 0.2rem;
+            color: var(--gray);
+            text-transform: uppercase;
+        }
+
+        .footer-line {
+            width: 40px;
+            height: 1px;
+            background: var(--gold);
+            margin: 2rem auto;
+        }
+
+        .footer-copy {
+            font-size: 0.7rem;
+            color: var(--gray);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            header {
+                padding: 1.5rem 2rem;
+            }
+
+            nav {
+                display: none;
+            }
+
+            section {
+                padding: 5rem 2rem;
+            }
+
+            .value-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stat-item {
+                border-right: none;
+                border-bottom: 1px solid rgba(201, 169, 98, 0.2);
+            }
+
+            .stat-item:last-child {
+                border-bottom: none;
+            }
+
+            .categoria-header {
+                flex-direction: column;
+                text-align: center;
+                gap: 1rem;
+            }
+
+            .compromiso-item {
+                flex-direction: column;
+                text-align: center;
+                align-items: center;
+            }
+
+            .contacto-card {
+                padding: 2rem;
+            }
+
+            .maquina-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+        }
+
+        /* Animaciones scroll */
+        .fade-up {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.8s var(--transition);
+        }
+
+        .fade-up.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+    <!-- Loader -->
+    <div class="loader" id="loader">
+        <div class="loader-logo">
+            <img src="../assets/essenza_logo_white.svg" alt="Essenza">
+        </div>
+        <div class="loader-line"></div>
+    </div>
+
+    <!-- Cursor -->
+    <div class="cursor" id="cursor"></div>
+    <div class="cursor-dot" id="cursorDot"></div>
+
+    <!-- Header -->
+    <header>
+        <a href="#" class="logo">
+            <img src="../assets/essenza_logo_white.svg" alt="Essenza">
+        </a>
+        <nav>
+            <a href="#propuesta">Propuesta</a>
+            <a href="#maquina">Servicio</a>
+            <a href="#catalogo">Catálogo</a>
+            <a href="#compromisos">Compromisos</a>
+            <a href="#contacto">Contacto</a>
+        </nav>
+    </header>
+
+    <!-- Hero -->
+    <section class="hero">
+        <div class="hero-bg"></div>
+        <div class="hero-content">
+            <p class="hero-subtitle">Vending Premium</p>
+            <img src="../assets/essenza_logo_white.svg" alt="Essenza" class="hero-logo">
+            <p class="hero-tagline">Elevando la experiencia de conveniencia</p>
+        </div>
+        <div class="scroll-indicator">
+            <span>Scroll</span>
+            <div class="scroll-line"></div>
+        </div>
+    </section>
+
+    <!-- Propuesta -->
+    <section class="propuesta" id="propuesta">
+        <div class="section-header fade-up">
+            <span class="section-number">01</span>
+            <h2 class="section-title">Propuesta de Valor</h2>
+            <div class="section-line"></div>
+        </div>
+        <div class="value-grid">
+            <div class="value-card fade-up">
+                <div class="value-icon">✦</div>
+                <h3>Satisfacción Total</h3>
+                <p>Amplia variedad de productos de alta calidad, garantizando una experiencia de compra conveniente y agradable para su personal y visitantes.</p>
+            </div>
+            <div class="value-card fade-up">
+                <div class="value-icon">◈</div>
+                <h3>Operación Óptima</h3>
+                <p>Sistemas avanzados de monitoreo y mantenimiento que aseguran un servicio continuo y de calidad, eliminando tiempos de inactividad.</p>
+            </div>
+            <div class="value-card fade-up">
+                <div class="value-icon">◇</div>
+                <h3>Cero Costo</h3>
+                <p>La máquina, el surtido, el mantenimiento — todo corre por nuestra cuenta. Usted solo brinda el espacio y su equipo disfruta el beneficio.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats -->
+    <section class="stats">
+        <div class="stats-grid">
+            <div class="stat-item fade-up">
+                <div class="stat-number">2</div>
+                <div class="stat-label">Líneas de Producto</div>
+            </div>
+            <div class="stat-item fade-up">
+                <div class="stat-number">40+</div>
+                <div class="stat-label">Productos Curados</div>
+            </div>
+            <div class="stat-item fade-up">
+                <div class="stat-number">24/7</div>
+                <div class="stat-label">Disponibilidad</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Máquina & Servicio -->
+    <section class="maquina" id="maquina">
+        <div class="section-header fade-up">
+            <span class="section-number">02</span>
+            <h2 class="section-title">Máquina & Servicio</h2>
+            <div class="section-line"></div>
+        </div>
+        <div class="maquina-grid">
+            <div class="maquina-card fade-up">
+                <div class="maquina-icon">
+                    <svg viewBox="0 0 24 24" stroke-width="1.5" fill="none" stroke="currentColor"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M12 4v16M2 12h20"/></svg>
+                </div>
+                <h3>Máquina Combo</h3>
+                <p>Dispensación de alimentos y bebidas en un solo equipo, maximizando variedad y conveniencia.</p>
+            </div>
+            <div class="maquina-card fade-up">
+                <div class="maquina-icon">
+                    <svg viewBox="0 0 24 24" stroke-width="1.5" fill="none" stroke="currentColor"><rect x="1" y="4" width="22" height="16" rx="2"/><path d="M1 10h22"/><path d="M6 16h4"/></svg>
+                </div>
+                <h3>Múltiples Formas de Pago</h3>
+                <p>Efectivo (monedero y billetero), tarjetas de crédito/débito, y <strong>vales de despensa</strong>. Máxima flexibilidad para sus colaboradores.</p>
+            </div>
+            <div class="maquina-card fade-up">
+                <div class="maquina-icon">
+                    <svg viewBox="0 0 24 24" stroke-width="1.5" fill="none" stroke="currentColor"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
+                </div>
+                <h3>Transparencia en Precios</h3>
+                <p>Mismo precio en efectivo o tarjeta. Sin comisiones adicionales, sin sorpresas.</p>
+            </div>
+            <div class="maquina-card fade-up">
+                <div class="maquina-icon">
+                    <svg viewBox="0 0 24 24" stroke-width="1.5" fill="none" stroke="currentColor"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><path d="M9 15l2 2 4-4"/></svg>
+                </div>
+                <h3>Equipos en Comodato</h3>
+                <p>Los equipos se entregan en comodato — sin inversión, sin riesgo. Nosotros asumimos la responsabilidad total.</p>
+            </div>
+            <div class="maquina-card fade-up">
+                <div class="maquina-icon">
+                    <svg viewBox="0 0 24 24" stroke-width="1.5" fill="none" stroke="currentColor"><path d="M21 12a9 9 0 1 1-9-9"/><path d="M21 3v9h-9"/></svg>
+                </div>
+                <h3>Optimización con Datos</h3>
+                <p>Estadísticas de consumo en tiempo real. Identificamos los productos más populares y ajustamos la oferta según preferencias reales.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Catálogo -->
+    <section class="catalogo" id="catalogo">
+        <div class="section-header fade-up">
+            <span class="section-number">03</span>
+            <h2 class="section-title">Catálogo de Productos</h2>
+            <div class="section-line"></div>
+        </div>
+
+        <!-- Línea 01 -->
+        <div class="categoria fade-up">
+            <div class="categoria-header">
+                <div class="categoria-numero">01</div>
+                <div class="categoria-info">
+                    <h3>Snacks Tradicional</h3>
+                    <p>Los clásicos que todos conocen y aman. Galletas, botanas, pastelitos y bebidas en porciones individuales.</p>
+                </div>
+            </div>
+            <div class="productos-grid">
+                <div class="producto-grupo">
+                    <h4>Galletas & Dulces</h4>
+                    <ul>
+                        <li>Príncipe Chocolate (Marinela)</li>
+                        <li>Oreo Original (Mondelez)</li>
+                        <li>Chokis (Gamesa)</li>
+                        <li>Emperador Chocolate (Gamesa)</li>
+                        <li>KitKat (Nestlé)</li>
+                        <li>Snickers (Mars)</li>
+                        <li>Carlos V (Nestlé)</li>
+                        <li>Mazapán (De La Rosa)</li>
+                        <li>Lunetas (De La Rosa)</li>
+                        <li>Gomitas Welch's</li>
+                        <li>Skittles</li>
+                        <li>Bubulubu</li>
+                        <li>Kínder Delice</li>
+                    </ul>
+                </div>
+                <div class="producto-grupo">
+                    <h4>Botanas Saladas</h4>
+                    <ul>
+                        <li>Doritos Nacho (Sabritas)</li>
+                        <li>Ruffles Queso (Sabritas)</li>
+                        <li>Cheetos Flamin' Hot (Sabritas)</li>
+                        <li>Takis Fuego (Barcel)</li>
+                        <li>Chicharrón Surtido (Snacker)</li>
+                        <li>Palomitas Surtidas (Slim Pop)</li>
+                        <li>Cacahuates Japoneses (De La Rosa)</li>
+                        <li>Rancheritos</li>
+                        <li>Cheetos Torciditos</li>
+                        <li>Fritos Chorizo</li>
+                        <li>Runners Mini</li>
+                    </ul>
+                </div>
+                <div class="producto-grupo">
+                    <h4>Pan & Pastelitos</h4>
+                    <ul>
+                        <li>Gansito (Marinela)</li>
+                        <li>Pingüinos (Marinela)</li>
+                        <li>Choco Roles (Marinela)</li>
+                        <li>Nito (Bimbo)</li>
+                        <li>Mantecadas (Bimbo)</li>
+                        <li>Barritas de Fresa (Marinela)</li>
+                        <li>Polvorones (Marinela)</li>
+                        <li>Canelitas</li>
+                        <li>Florentinas</li>
+                        <li>Maravillas</li>
+                        <li>Chips Ahoy</li>
+                    </ul>
+                </div>
+                <div class="producto-grupo">
+                    <h4>Bebidas</h4>
+                    <ul>
+                        <li>Coca Cola Mini (235ml)</li>
+                        <li>Coca Cola Sin Azúcar</li>
+                        <li>Coca Cola Lata</li>
+                        <li>Pepsi / Seven Lata</li>
+                        <li>Red Cola PET</li>
+                        <li>Squirt PET</li>
+                        <li>Sidral PET</li>
+                        <li>Manzanita Sol Lata</li>
+                        <li>Jugo Manzana 100% (Tree Top)</li>
+                        <li>Jugo Naranja (Jumex)</li>
+                        <li>Electrolit PET</li>
+                        <li>Agua 1 LT / 600 ML</li>
+                        <li>Gatorade</li>
+                    </ul>
+                </div>
+                <div class="producto-grupo">
+                    <h4>Lácteos</h4>
+                    <ul>
+                        <li>Yogurt Bebible (Lala)</li>
+                        <li>Leche Sabor Chocolate (Santa Clara)</li>
+                        <li>Leche Sabor Fresa (Santa Clara)</li>
+                        <li>Leche Santa Clara</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Línea 02 -->
+        <div class="categoria fade-up">
+            <div class="categoria-header">
+                <div class="categoria-numero">02</div>
+                <div class="categoria-info">
+                    <h3>Healthy & Wellness</h3>
+                    <p>Opciones conscientes para quienes cuidan su alimentación sin sacrificar sabor. Productos naturales, horneados y premium.</p>
+                </div>
+            </div>
+            <div class="productos-grid">
+                <div class="producto-grupo">
+                    <h4>Snacks Saludables</h4>
+                    <ul>
+                        <li>Botana Horneada (Susalia) — sin gluten</li>
+                        <li>Veggie Straws (Garden Veggie)</li>
+                        <li>Barras Granola Crunchy (Nature Valley)</li>
+                        <li>Barras Granola (Dasavena)</li>
+                        <li>Barras Nueces y Miel (Kirkland)</li>
+                        <li>Galletas Arroz y Quinoa (Alquimia) — sin gluten</li>
+                        <li>Barra Granola Kirkland</li>
+                        <li>Barra Proteína Kirkland</li>
+                        <li>Galletas Avena (Gely)</li>
+                        <li>Papas Veggies</li>
+                    </ul>
+                </div>
+                <div class="producto-grupo">
+                    <h4>Aguas Premium & Hidratación</h4>
+                    <ul>
+                        <li>Agua Mineral Mix (San Pellegrino) 330ml</li>
+                        <li>Agua Mineral Topo Chico 600ml</li>
+                        <li>Agua Mineral Gasificada Kirkland (Italiana) 500ml</li>
+                        <li>Agua Mineral Peñafiel 600ml</li>
+                        <li>Electrolitos Mix (Seltz)</li>
+                        <li>Agua Purificada Kirkland 500ml</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Compromisos -->
+    <section class="compromisos" id="compromisos">
+        <div class="section-header fade-up">
+            <span class="section-number">04</span>
+            <h2 class="section-title">Nuestros Compromisos</h2>
+            <div class="section-line"></div>
+        </div>
+        <div class="compromisos-list">
+            <div class="compromiso-item">
+                <div class="compromiso-icon">
+                    <svg viewBox="0 0 24 24" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+                </div>
+                <div class="compromiso-content">
+                    <h4>Disponibilidad 24/7</h4>
+                    <p>Productos disponibles a cualquier hora del día, los 365 días del año.</p>
+                </div>
+            </div>
+            <div class="compromiso-item">
+                <div class="compromiso-icon">
+                    <svg viewBox="0 0 24 24" stroke-width="1.5"><path d="M4 14h6v6H4zM14 4h6v6h-6z"/><path d="M4 4h6v6H4zM14 14h6v6h-6z"/></svg>
+                </div>
+                <div class="compromiso-content">
+                    <h4>Reabastecimiento Constante</h4>
+                    <p>A través de nuestro dispositivo de monitoreo, gestionamos el inventario en tiempo real y programamos visitas de resurtido según sea necesario. Sin límite de visitas por semana.</p>
+                </div>
+            </div>
+            <div class="compromiso-item">
+                <div class="compromiso-icon">
+                    <svg viewBox="0 0 24 24" stroke-width="1.5"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                </div>
+                <div class="compromiso-content">
+                    <h4>Mantenimiento Proactivo</h4>
+                    <p>Sistema de monitoreo remoto en tiempo real. Mantenimiento y limpieza constante tanto del interior como del exterior de las máquinas.</p>
+                </div>
+            </div>
+            <div class="compromiso-item">
+                <div class="compromiso-icon">
+                    <svg viewBox="0 0 24 24" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                </div>
+                <div class="compromiso-content">
+                    <h4>Productos de Calidad</h4>
+                    <p>Selección curada de marcas reconocidas y opciones premium para todos los gustos.</p>
+                </div>
+            </div>
+            <div class="compromiso-item">
+                <div class="compromiso-icon">
+                    <svg viewBox="0 0 24 24" stroke-width="1.5"><path d="M12 3v18M3 12h18"/></svg>
+                </div>
+                <div class="compromiso-content">
+                    <h4>Flexibilidad Total</h4>
+                    <p>Estamos preparados para modificar el catálogo de productos según las necesidades específicas de su empresa.</p>
+                </div>
+            </div>
+            <div class="compromiso-item">
+                <div class="compromiso-icon">
+                    <svg viewBox="0 0 24 24" stroke-width="1.5"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+                </div>
+                <div class="compromiso-content">
+                    <h4>Nosotros nos Encargamos de Todo</h4>
+                    <p>Instalación, surtido y mantenimiento. Usted solo proporciona el espacio.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contacto -->
+    <section class="contacto" id="contacto">
+        <div class="section-header fade-up">
+            <span class="section-number">05</span>
+            <h2 class="section-title">Un Beneficio Más para su Equipo</h2>
+            <div class="section-line"></div>
+        </div>
+        <div class="contacto-card fade-up">
+            <h3 class="contacto-nombre">Paulina Ascencio</h3>
+            <p class="contacto-rol">Directora Comercial</p>
+            <div class="contacto-info">
+                <a href="mailto:ascenciorozco@gmail.com" class="contacto-link">ascenciorozco@gmail.com</a>
+                <a href="tel:+523337249305" class="contacto-link">+52 33 3724 9305</a>
+            </div>
+            <a href="mailto:ascenciorozco@gmail.com?subject=Propuesta%20Essenza%20Vending%20Premium%20-%20Hershey's" class="cta-button">
+                <span>Agendar Reunión</span>
+            </a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <img src="../assets/essenza_logo_white.svg" alt="Essenza" class="footer-logo">
+        <p class="footer-tagline">Vending Premium</p>
+        <div class="footer-line"></div>
+        <p class="footer-copy">© 2025 Essenza. Todos los derechos reservados.</p>
+    </footer>
+
+    <script>
+        // Loader
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                document.getElementById('loader').style.opacity = '0';
+                setTimeout(() => {
+                    document.getElementById('loader').style.display = 'none';
+                }, 500);
+            }, 2500);
+        });
+
+        // Custom cursor
+        const cursor = document.getElementById('cursor');
+        const cursorDot = document.getElementById('cursorDot');
+
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.clientX - 10 + 'px';
+            cursor.style.top = e.clientY - 10 + 'px';
+            cursorDot.style.left = e.clientX - 2 + 'px';
+            cursorDot.style.top = e.clientY - 2 + 'px';
+        });
+
+        document.addEventListener('mousedown', () => {
+            cursor.style.transform = 'scale(0.8)';
+        });
+
+        document.addEventListener('mouseup', () => {
+            cursor.style.transform = 'scale(1)';
+        });
+
+        // Scroll animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry, index) => {
+                if (entry.isIntersecting) {
+                    setTimeout(() => {
+                        entry.target.classList.add('visible');
+                    }, index * 100);
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-up, .compromiso-item').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Smooth scroll for nav links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Parallax effect on hero
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const hero = document.querySelector('.hero-content');
+            const header = document.querySelector('header');
+
+            // Header background on scroll
+            if (scrolled > 100) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+
+            if (hero && scrolled < window.innerHeight) {
+                hero.style.transform = `translateY(${scrolled * 0.3}px)`;
+                hero.style.opacity = 1 - (scrolled / window.innerHeight);
+            }
+        });
+    </script>
+</body>
+</html>

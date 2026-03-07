@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Essenza — Vending Premium</title>
+    <meta name="description" content="Servicio de vending premium para empresas y espacios de alto nivel. Cero costo, máxima conveniencia.">
+    <link rel="icon" type="image/svg+xml" href="assets/essenza_icon.svg">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --black: #0a0a0a;
+            --white: #fafafa;
+            --cream: #f5f3ef;
+            --gold: #c9a962;
+            --gold-light: #d4bc7e;
+            --charcoal: #2a2a2a;
+            --gray: #6a6a6a;
+            --transition: cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: var(--cream);
+            color: var(--charcoal);
+            overflow-x: hidden;
+            line-height: 1.7;
+        }
+
+        /* Loader */
+        .loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--black);
+            z-index: 10000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+
+        .loader-logo {
+            width: 100px;
+            height: 100px;
+            opacity: 0;
+            animation: fadeIn 0.8s var(--transition) forwards;
+        }
+
+        .loader-logo img {
+            width: 100%;
+            height: 100%;
+        }
+
+        .loader-line {
+            width: 0;
+            height: 1px;
+            background: var(--gold);
+            margin-top: 2rem;
+            animation: expandLine 1.5s var(--transition) 0.3s forwards;
+        }
+
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+
+        @keyframes expandLine {
+            to { width: 150px; }
+        }
+
+        /* Hero */
+        .hero {
+            min-height: 100vh;
+            background: var(--black);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            padding: 2rem;
+        }
+
+        .hero-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background:
+                radial-gradient(ellipse at 20% 30%, rgba(201, 169, 98, 0.08) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 70%, rgba(201, 169, 98, 0.06) 0%, transparent 50%);
+        }
+
+        .hero-content {
+            text-align: center;
+            z-index: 10;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: heroReveal 1s var(--transition) 2s forwards;
+            max-width: 800px;
+        }
+
+        @keyframes heroReveal {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero-logo {
+            width: 280px;
+            height: auto;
+            margin-bottom: 3rem;
+        }
+
+        .hero-tagline {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(1.5rem, 4vw, 2.5rem);
+            font-weight: 300;
+            color: var(--white);
+            letter-spacing: 0.05rem;
+            line-height: 1.4;
+            margin-bottom: 1.5rem;
+        }
+
+        .hero-subtitle {
+            font-size: 0.85rem;
+            font-weight: 300;
+            color: var(--gray);
+            letter-spacing: 0.1rem;
+            margin-bottom: 3rem;
+        }
+
+        .hero-cta {
+            display: inline-block;
+            padding: 1rem 3rem;
+            border: 1px solid var(--gold);
+            color: var(--gold);
+            text-decoration: none;
+            font-size: 0.7rem;
+            letter-spacing: 0.25rem;
+            text-transform: uppercase;
+            transition: all 0.4s var(--transition);
+        }
+
+        .hero-cta:hover {
+            background: var(--gold);
+            color: var(--black);
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 3rem;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            opacity: 0;
+            animation: fadeIn 1s var(--transition) 3s forwards;
+        }
+
+        .scroll-indicator span {
+            font-size: 0.6rem;
+            letter-spacing: 0.3rem;
+            color: var(--gray);
+            text-transform: uppercase;
+        }
+
+        .scroll-line {
+            width: 1px;
+            height: 40px;
+            background: linear-gradient(to bottom, var(--gold), transparent);
+            animation: scrollPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes scrollPulse {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+        }
+
+        /* Value Section */
+        .value {
+            padding: 8rem 2rem;
+            background: var(--white);
+            text-align: center;
+        }
+
+        .value-content {
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .value-label {
+            font-size: 0.65rem;
+            letter-spacing: 0.3rem;
+            color: var(--gold);
+            text-transform: uppercase;
+            margin-bottom: 2rem;
+        }
+
+        .value-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(2rem, 5vw, 3rem);
+            font-weight: 300;
+            color: var(--charcoal);
+            line-height: 1.3;
+            margin-bottom: 2rem;
+        }
+
+        .value-description {
+            font-size: 1rem;
+            color: var(--gray);
+            line-height: 1.9;
+            margin-bottom: 3rem;
+        }
+
+        .value-features {
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            flex-wrap: wrap;
+        }
+
+        .value-feature {
+            text-align: center;
+        }
+
+        .value-feature-label {
+            font-size: 0.65rem;
+            letter-spacing: 0.2rem;
+            color: var(--gold);
+            text-transform: uppercase;
+            margin-bottom: 0.5rem;
+        }
+
+        .value-feature-text {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.8rem;
+            font-weight: 300;
+            color: var(--charcoal);
+        }
+
+        /* Clients Section */
+        .clients {
+            padding: 8rem 2rem;
+            background: var(--black);
+            color: var(--white);
+        }
+
+        .clients-content {
+            max-width: 1000px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .clients-label {
+            font-size: 0.65rem;
+            letter-spacing: 0.3rem;
+            color: var(--gold);
+            text-transform: uppercase;
+            margin-bottom: 2rem;
+        }
+
+        .clients-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(1.8rem, 4vw, 2.5rem);
+            font-weight: 300;
+            margin-bottom: 4rem;
+        }
+
+        .clients-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 2rem;
+        }
+
+        .client-card {
+            padding: 2.5rem 1.5rem;
+            border: 1px solid rgba(201, 169, 98, 0.2);
+            transition: all 0.4s var(--transition);
+        }
+
+        .client-card:hover {
+            border-color: var(--gold);
+            transform: translateY(-5px);
+        }
+
+        .client-icon {
+            width: 40px;
+            height: 40px;
+            margin: 0 auto 1.5rem;
+            color: var(--gold);
+        }
+
+        .client-icon svg {
+            width: 100%;
+            height: 100%;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 1.5;
+        }
+
+        .client-card h3 {
+            font-size: 0.75rem;
+            letter-spacing: 0.15rem;
+            text-transform: uppercase;
+            font-weight: 400;
+            color: var(--white);
+        }
+
+        /* Contact Section */
+        .contact {
+            padding: 8rem 2rem;
+            background: var(--cream);
+            text-align: center;
+        }
+
+        .contact-content {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .contact-label {
+            font-size: 0.65rem;
+            letter-spacing: 0.3rem;
+            color: var(--gold);
+            text-transform: uppercase;
+            margin-bottom: 2rem;
+        }
+
+        .contact-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(2rem, 5vw, 3rem);
+            font-weight: 300;
+            color: var(--charcoal);
+            margin-bottom: 1rem;
+        }
+
+        .contact-subtitle {
+            font-size: 1rem;
+            color: var(--gray);
+            margin-bottom: 3rem;
+        }
+
+        .contact-card {
+            background: var(--white);
+            padding: 3rem;
+            border: 1px solid rgba(201, 169, 98, 0.2);
+            position: relative;
+        }
+
+        .contact-card::before,
+        .contact-card::after {
+            content: '';
+            position: absolute;
+            width: 15px;
+            height: 15px;
+            border-color: var(--gold);
+            border-style: solid;
+        }
+
+        .contact-card::before {
+            top: -1px;
+            left: -1px;
+            border-width: 1px 0 0 1px;
+        }
+
+        .contact-card::after {
+            bottom: -1px;
+            right: -1px;
+            border-width: 0 1px 1px 0;
+        }
+
+        .contact-name {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.8rem;
+            font-weight: 400;
+            color: var(--charcoal);
+            margin-bottom: 0.3rem;
+        }
+
+        .contact-role {
+            font-size: 0.7rem;
+            letter-spacing: 0.2rem;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 2rem;
+        }
+
+        .contact-link {
+            display: block;
+            color: var(--charcoal);
+            text-decoration: none;
+            font-size: 0.95rem;
+            padding: 0.6rem 0;
+            transition: color 0.3s var(--transition);
+        }
+
+        .contact-link:hover {
+            color: var(--gold);
+        }
+
+        .contact-cta {
+            display: inline-block;
+            margin-top: 2rem;
+            padding: 1rem 3rem;
+            background: var(--black);
+            color: var(--white);
+            text-decoration: none;
+            font-size: 0.7rem;
+            letter-spacing: 0.2rem;
+            text-transform: uppercase;
+            transition: all 0.4s var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .contact-cta::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: var(--gold);
+            transition: left 0.4s var(--transition);
+            z-index: 0;
+        }
+
+        .contact-cta:hover::before {
+            left: 0;
+        }
+
+        .contact-cta span {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--black);
+            color: var(--white);
+            padding: 3rem 2rem;
+            text-align: center;
+        }
+
+        .footer-logo {
+            width: 80px;
+            height: auto;
+            margin: 0 auto 1rem;
+        }
+
+        .footer-tagline {
+            font-size: 0.65rem;
+            letter-spacing: 0.2rem;
+            color: var(--gray);
+            text-transform: uppercase;
+            margin-bottom: 2rem;
+        }
+
+        .footer-line {
+            width: 30px;
+            height: 1px;
+            background: var(--gold);
+            margin: 0 auto 2rem;
+        }
+
+        .footer-copy {
+            font-size: 0.65rem;
+            color: var(--gray);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero {
+                padding: 4rem 2rem;
+            }
+
+            .hero-logo {
+                width: 200px;
+            }
+
+            .value, .clients, .contact {
+                padding: 5rem 1.5rem;
+            }
+
+            .value-features {
+                gap: 2rem;
+            }
+
+            .clients-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 1rem;
+            }
+
+            .client-card {
+                padding: 1.5rem 1rem;
+            }
+
+            .contact-card {
+                padding: 2rem 1.5rem;
+            }
+        }
+
+        /* Animations */
+        .fade-up {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s var(--transition);
+        }
+
+        .fade-up.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+    <!-- Loader -->
+    <div class="loader" id="loader">
+        <div class="loader-logo">
+            <img src="assets/essenza_logo_white.svg" alt="Essenza">
+        </div>
+        <div class="loader-line"></div>
+    </div>
+
+    <!-- Hero -->
+    <section class="hero">
+        <div class="hero-bg"></div>
+        <div class="hero-content">
+            <img src="assets/essenza_logo_white.svg" alt="Essenza" class="hero-logo">
+            <p class="hero-tagline">Vending premium para espacios que exigen más</p>
+            <p class="hero-subtitle">Snacks tradicionales y opciones saludables. Cero costo para usted.</p>
+            <a href="#contacto" class="hero-cta">Contáctenos</a>
+        </div>
+        <div class="scroll-indicator">
+            <span>Scroll</span>
+            <div class="scroll-line"></div>
+        </div>
+    </section>
+
+    <!-- Value -->
+    <section class="value">
+        <div class="value-content fade-up">
+            <p class="value-label">Servicio completo</p>
+            <h2 class="value-title">Nosotros ponemos todo.<br>Usted solo brinda el espacio.</h2>
+            <p class="value-description">
+                Máquina, productos, resurtido y mantenimiento — todo corre por nuestra cuenta.
+                Sin inversión, sin riesgo, sin preocupaciones. Solo el beneficio de ofrecer
+                conveniencia premium a su equipo o visitantes.
+            </p>
+            <div class="value-features">
+                <div class="value-feature">
+                    <p class="value-feature-label">Disponibilidad</p>
+                    <p class="value-feature-text">24/7</p>
+                </div>
+                <div class="value-feature">
+                    <p class="value-feature-label">Costo</p>
+                    <p class="value-feature-text">Cero</p>
+                </div>
+                <div class="value-feature">
+                    <p class="value-feature-label">Líneas</p>
+                    <p class="value-feature-text">2</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Clients -->
+    <section class="clients">
+        <div class="clients-content">
+            <p class="clients-label fade-up">Para quién</p>
+            <h2 class="clients-title fade-up">Espacios donde la conveniencia importa</h2>
+            <div class="clients-grid">
+                <div class="client-card fade-up">
+                    <div class="client-icon">
+                        <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+                    </div>
+                    <h3>Oficinas Corporativas</h3>
+                </div>
+                <div class="client-card fade-up">
+                    <div class="client-icon">
+                        <svg viewBox="0 0 24 24"><path d="M18 8h1a4 4 0 0 1 0 8h-1M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8zM6 1v3M10 1v3M14 1v3"/></svg>
+                    </div>
+                    <h3>Gimnasios</h3>
+                </div>
+                <div class="client-card fade-up">
+                    <div class="client-icon">
+                        <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                    </div>
+                    <h3>Residenciales de Lujo</h3>
+                </div>
+                <div class="client-card fade-up">
+                    <div class="client-icon">
+                        <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                    </div>
+                    <h3>Coworkings</h3>
+                </div>
+                <div class="client-card fade-up">
+                    <div class="client-icon">
+                        <svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+                    </div>
+                    <h3>Propiedades Airbnb</h3>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact -->
+    <section class="contact" id="contacto">
+        <div class="contact-content">
+            <p class="contact-label fade-up">Hablemos</p>
+            <h2 class="contact-title fade-up">Un beneficio más para su espacio</h2>
+            <p class="contact-subtitle fade-up">Sin compromiso. Cuéntenos sobre su espacio y le preparamos una propuesta.</p>
+            <div class="contact-card fade-up">
+                <h3 class="contact-name">Paulina Ascencio</h3>
+                <p class="contact-role">Directora Comercial</p>
+                <a href="mailto:ascenciorozco@gmail.com" class="contact-link">ascenciorozco@gmail.com</a>
+                <a href="tel:+523337249305" class="contact-link">+52 33 3724 9305</a>
+                <a href="mailto:ascenciorozco@gmail.com?subject=Consulta%20Essenza%20Vending%20Premium" class="contact-cta">
+                    <span>Enviar Mensaje</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <img src="assets/essenza_logo_white.svg" alt="Essenza" class="footer-logo">
+        <p class="footer-tagline">Vending Premium</p>
+        <div class="footer-line"></div>
+        <p class="footer-copy">© 2025 Essenza. Guadalajara, México.</p>
+    </footer>
+
+    <script>
+        // Loader
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                document.getElementById('loader').style.opacity = '0';
+                document.getElementById('loader').style.transition = 'opacity 0.5s ease';
+                setTimeout(() => {
+                    document.getElementById('loader').style.display = 'none';
+                }, 500);
+            }, 1800);
+        });
+
+        // Scroll animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry, index) => {
+                if (entry.isIntersecting) {
+                    setTimeout(() => {
+                        entry.target.classList.add('visible');
+                    }, index * 100);
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-up').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

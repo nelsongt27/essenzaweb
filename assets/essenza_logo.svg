@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400">
+  <defs>
+    <!-- Gradiente sutil dorado -->
+    <linearGradient id="goldGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#D4BC7E"/>
+      <stop offset="50%" style="stop-color:#C9A962"/>
+      <stop offset="100%" style="stop-color:#B8954F"/>
+    </linearGradient>
+  </defs>
+  
+  <!-- Fondo transparente -->
+  
+  <!-- Símbolo: "E" abstracta formada por líneas que evocan dispensación/flujo -->
+  <g transform="translate(200, 200)">
+    <!-- Círculo exterior - representa la máquina/contenedor -->
+    <circle cx="0" cy="0" r="85" fill="none" stroke="#0A0A0A" stroke-width="2"/>
+    
+    <!-- E estilizada con líneas horizontales - minimalista -->
+    <line x1="-35" y1="-40" x2="35" y2="-40" stroke="#0A0A0A" stroke-width="3" stroke-linecap="round"/>
+    <line x1="-35" y1="0" x2="25" y2="0" stroke="#0A0A0A" stroke-width="3" stroke-linecap="round"/>
+    <line x1="-35" y1="40" x2="35" y2="40" stroke="#0A0A0A" stroke-width="3" stroke-linecap="round"/>
+    
+    <!-- Línea vertical de la E -->
+    <line x1="-35" y1="-40" x2="-35" y2="40" stroke="#0A0A0A" stroke-width="3" stroke-linecap="round"/>
+    
+    <!-- Punto dorado - acento premium, representa "esencia" -->
+    <circle cx="45" cy="0" r="6" fill="url(#goldGradient)"/>
+  </g>
+  
+  <!-- Wordmark debajo -->
+  <text x="200" y="340" 
+        font-family="SF Pro Display, -apple-system, Helvetica Neue, Arial, sans-serif" 
+        font-size="28" 
+        font-weight="300" 
+        letter-spacing="12"
+        text-anchor="middle" 
+        fill="#0A0A0A">ESSENZA</text>
+  
+</svg>
