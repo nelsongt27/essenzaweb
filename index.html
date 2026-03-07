@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Essenza — Vending Premium</title>
-    <meta name="description" content="Servicio de vending premium para empresas y espacios de alto nivel. Cero costo, máxima conveniencia.">
+    <title>Essenza — Vending con Servicio</title>
+    <meta name="description" content="Servicio completo de vending para empresas, Airbnbs y espacios que valoran la conveniencia. Cero costo, máximo servicio.">
     <link rel="icon" type="image/svg+xml" href="assets/essenza_icon.svg">
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
     <style>
@@ -128,20 +128,21 @@
 
         .hero-tagline {
             font-family: 'Cormorant Garamond', serif;
-            font-size: clamp(1.5rem, 4vw, 2.5rem);
+            font-size: clamp(1.8rem, 5vw, 3rem);
             font-weight: 300;
             color: var(--white);
-            letter-spacing: 0.05rem;
-            line-height: 1.4;
+            letter-spacing: 0.02rem;
+            line-height: 1.3;
             margin-bottom: 1.5rem;
         }
 
         .hero-subtitle {
-            font-size: 0.85rem;
+            font-size: 1.15rem;
             font-weight: 300;
-            color: var(--gray);
-            letter-spacing: 0.1rem;
+            color: rgba(255, 255, 255, 0.7);
+            letter-spacing: 0.02rem;
             margin-bottom: 3rem;
+            line-height: 1.6;
         }
 
         .hero-cta {
@@ -161,38 +162,6 @@
             color: var(--black);
         }
 
-        .scroll-indicator {
-            position: absolute;
-            bottom: 3rem;
-            left: 50%;
-            transform: translateX(-50%);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 0.5rem;
-            opacity: 0;
-            animation: fadeIn 1s var(--transition) 3s forwards;
-        }
-
-        .scroll-indicator span {
-            font-size: 0.6rem;
-            letter-spacing: 0.3rem;
-            color: var(--gray);
-            text-transform: uppercase;
-        }
-
-        .scroll-line {
-            width: 1px;
-            height: 40px;
-            background: linear-gradient(to bottom, var(--gold), transparent);
-            animation: scrollPulse 2s ease-in-out infinite;
-        }
-
-        @keyframes scrollPulse {
-            0%, 100% { opacity: 0.3; }
-            50% { opacity: 1; }
-        }
-
         /* Value Section */
         .value {
             padding: 8rem 2rem;
@@ -206,8 +175,8 @@
         }
 
         .value-label {
-            font-size: 0.65rem;
-            letter-spacing: 0.3rem;
+            font-size: 0.8rem;
+            letter-spacing: 0.2rem;
             color: var(--gold);
             text-transform: uppercase;
             margin-bottom: 2rem;
@@ -223,9 +192,9 @@
         }
 
         .value-description {
-            font-size: 1rem;
+            font-size: 1.1rem;
             color: var(--gray);
-            line-height: 1.9;
+            line-height: 1.8;
             margin-bottom: 3rem;
         }
 
@@ -241,8 +210,8 @@
         }
 
         .value-feature-label {
-            font-size: 0.65rem;
-            letter-spacing: 0.2rem;
+            font-size: 0.8rem;
+            letter-spacing: 0.15rem;
             color: var(--gold);
             text-transform: uppercase;
             margin-bottom: 0.5rem;
@@ -269,8 +238,8 @@
         }
 
         .clients-label {
-            font-size: 0.65rem;
-            letter-spacing: 0.3rem;
+            font-size: 0.8rem;
+            letter-spacing: 0.2rem;
             color: var(--gold);
             text-transform: uppercase;
             margin-bottom: 2rem;
@@ -316,8 +285,8 @@
         }
 
         .client-card h3 {
-            font-size: 0.75rem;
-            letter-spacing: 0.15rem;
+            font-size: 0.85rem;
+            letter-spacing: 0.1rem;
             text-transform: uppercase;
             font-weight: 400;
             color: var(--white);
@@ -336,8 +305,8 @@
         }
 
         .contact-label {
-            font-size: 0.65rem;
-            letter-spacing: 0.3rem;
+            font-size: 0.8rem;
+            letter-spacing: 0.2rem;
             color: var(--gold);
             text-transform: uppercase;
             margin-bottom: 2rem;
@@ -352,9 +321,10 @@
         }
 
         .contact-subtitle {
-            font-size: 1rem;
+            font-size: 1.1rem;
             color: var(--gray);
             margin-bottom: 3rem;
+            line-height: 1.6;
         }
 
         .contact-card {
@@ -544,13 +514,9 @@
         <div class="hero-bg"></div>
         <div class="hero-content">
             <img src="assets/essenza_logo_white.svg" alt="Essenza" class="hero-logo">
-            <p class="hero-tagline">Vending premium para espacios que exigen más</p>
-            <p class="hero-subtitle">Snacks tradicionales y opciones saludables. Cero costo para usted.</p>
-            <a href="#contacto" class="hero-cta">Contáctenos</a>
-        </div>
-        <div class="scroll-indicator">
-            <span>Scroll</span>
-            <div class="scroll-line"></div>
+            <p class="hero-tagline">Conveniencia que suma valor a tu espacio</p>
+            <p class="hero-subtitle">Snacks, bebidas y opciones saludables — siempre disponibles.<br>Sin costo. Sin complicaciones. Solo servicio.</p>
+            <a href="#contacto" class="hero-cta">Hablemos</a>
         </div>
     </section>
 
@@ -558,11 +524,10 @@
     <section class="value">
         <div class="value-content fade-up">
             <p class="value-label">Servicio completo</p>
-            <h2 class="value-title">Nosotros ponemos todo.<br>Usted solo brinda el espacio.</h2>
+            <h2 class="value-title">Nosotros ponemos todo.<br>Tú solo pones el espacio.</h2>
             <p class="value-description">
                 Máquina, productos, resurtido y mantenimiento — todo corre por nuestra cuenta.
-                Sin inversión, sin riesgo, sin preocupaciones. Solo el beneficio de ofrecer
-                conveniencia premium a su equipo o visitantes.
+                Sin inversión, sin riesgo, sin complicaciones. Un servicio más que tus colaboradores o huéspedes van a agradecer.
             </p>
             <div class="value-features">
                 <div class="value-feature">
@@ -572,10 +537,6 @@
                 <div class="value-feature">
                     <p class="value-feature-label">Costo</p>
                     <p class="value-feature-text">Cero</p>
-                </div>
-                <div class="value-feature">
-                    <p class="value-feature-label">Líneas</p>
-                    <p class="value-feature-text">2</p>
                 </div>
             </div>
         </div>
@@ -625,14 +586,14 @@
     <section class="contact" id="contacto">
         <div class="contact-content">
             <p class="contact-label fade-up">Hablemos</p>
-            <h2 class="contact-title fade-up">Un beneficio más para su espacio</h2>
-            <p class="contact-subtitle fade-up">Sin compromiso. Cuéntenos sobre su espacio y le preparamos una propuesta.</p>
+            <h2 class="contact-title fade-up">Un servicio más para tu espacio</h2>
+            <p class="contact-subtitle fade-up">Sin compromiso. Cuéntanos sobre tu espacio y te preparamos una propuesta.</p>
             <div class="contact-card fade-up">
                 <h3 class="contact-name">Paulina Ascencio</h3>
                 <p class="contact-role">Directora Comercial</p>
                 <a href="mailto:ascenciorozco@gmail.com" class="contact-link">ascenciorozco@gmail.com</a>
                 <a href="tel:+523337249305" class="contact-link">+52 33 3724 9305</a>
-                <a href="mailto:ascenciorozco@gmail.com?subject=Consulta%20Essenza%20Vending%20Premium" class="contact-cta">
+                <a href="mailto:ascenciorozco@gmail.com?subject=Consulta%20Essenza%20Vending" class="contact-cta">
                     <span>Enviar Mensaje</span>
                 </a>
             </div>
@@ -642,7 +603,7 @@
     <!-- Footer -->
     <footer>
         <img src="assets/essenza_logo_white.svg" alt="Essenza" class="footer-logo">
-        <p class="footer-tagline">Vending Premium</p>
+        <p class="footer-tagline">Vending con Servicio</p>
         <div class="footer-line"></div>
         <p class="footer-copy">© 2025 Essenza. Guadalajara, México.</p>
     </footer>
